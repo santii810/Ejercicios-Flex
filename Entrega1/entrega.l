@@ -10,6 +10,10 @@
 
 %}
 
+
+ENTEROS -?[0-9]+
+DECIMALES -?[0-9]*\.[0-9]+
+
 IDENTIFICADOR [a-zA-Z_0-9]
 
 
@@ -18,6 +22,10 @@ IDENTIFICADOR [a-zA-Z_0-9]
 
 
 %%
+
+{DECIMALES}		printf("\nlinea %d, constante real: %s", linea, yytext);
+{ENTEROS}		printf("\nlinea %d, constante entera: %s", linea, yytext);
+
 
 (?i:abstracto)		printf("\nlinea %d, palabra reservada: %s", linea, yytext);
 (?i:asociativa)		printf("\nlinea %d, palabra reservada: %s", linea, yytext);
