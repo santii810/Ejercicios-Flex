@@ -10,13 +10,15 @@
 
 %}
 
-RESERVADAS abstracto | asociativa | booleano | cabecera | cadena | caso | caracter | clase | conjunto | constante | cuerpo | constructor | cuando | descendente | destructor | de | devolver | carga | elemento | ejecuta | en | entero | entonces | es | especifico | excepto | fichero | final | finalmente | funcion | generico | hasta | interfaz | lanzar | lista | mientras | modificable | otro | paquete | para | privado | probar | procedimiento | programa | publico | real | registro | repite | salir | semipublico | si | sino | tipo | variable
+IDENTIFICADOR [a-zA-Z_0-9]
+
 
 
 
 
 
 %%
+
 (?i:abstracto)		printf("\nlinea %d, palabra reservada: %s", linea, yytext);
 (?i:asociativa)		printf("\nlinea %d, palabra reservada: %s", linea, yytext);
 (?i:booleano)		printf("\nlinea %d, palabra reservada: %s", linea, yytext);
@@ -71,7 +73,12 @@ RESERVADAS abstracto | asociativa | booleano | cabecera | cadena | caso | caract
 (?i:sino)		printf("\nlinea %d, palabra reservada: %s", linea, yytext);
 (?i:tipo)		printf("\nlinea %d, palabra reservada: %s", linea, yytext);
 (?i:variable)		printf("\nlinea %d, palabra reservada: %s", linea, yytext);
-\n			linea++;
+
+
+
+
+^[a-zA-Z_]{IDENTIFICADOR}*		printf("\nlinea %d, identificador: %s", linea, yytext);
+\n				linea++;
 
 
 
