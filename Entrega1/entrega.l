@@ -11,18 +11,17 @@
 %}
 
 
-ENTEROS -?[0-9]+
-DECIMALES -?[0-9]*\.[0-9]+
-
-IDENTIFICADOR [a-zA-Z_0-9]
-
+ENTEROS 	[+-]?[0-9]+
+DECIMALES 	[+-]?[0-9]*\.[0-9]+
+IDENTIFICADOR 	[a-zA-Z_0-9]
+EXPONENTE	({ENTEROS}|{DECIMALES})[eE][+-]?{ENTEROS}
 
 
 
 
 
 %%
-
+{EXPONENTE}		printf("\nlinea %d, constante real: %s", linea, yytext);
 {DECIMALES}		printf("\nlinea %d, constante real: %s", linea, yytext);
 {ENTEROS}		printf("\nlinea %d, constante entera: %s", linea, yytext);
 
