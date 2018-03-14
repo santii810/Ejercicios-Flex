@@ -1,13 +1,10 @@
-'87'
-'\377'
-'\0'
-'\x23'
-'\xa3'
-si sino hasta
-lanzar
-'\0'
-'\2'
-'\x1'
-
-'\a' '9' '\xD' '\xaF' '\''
 '\t' '\v'
+''hola''
+''\nRadio de la /*circunferencia*/: ''
+''\nRadio de la ''
+''linea1 \
+linea2 \
+linea3 ''
+''eres un \151\144\x69\157\x74\141\n''
+''\n''
+'*'
