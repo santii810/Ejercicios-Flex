@@ -9,21 +9,24 @@
 	int linea = 1;
 
 %}
-
-
+C_ESCAPE 	(\\'|\\?|\\\\|\\a|\\b|\\f|\\n|\\r|\\t|\\v)
+C_DECIMAL	([0-1]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])
+C_HEXADECIMAL	(?i:\\x[0-9a-f]{1,2})
+C_OCTAL		\\[0-3][0-7]{1,2}
 ENTEROS 	[+-]?[0-9]+
 DECIMALES 	[+-]?[0-9]*\.[0-9]+
 IDENTIFICADOR 	[a-zA-Z_0-9]
 EXPONENTE	({ENTEROS}|{DECIMALES})[eE][+-]?{ENTEROS}
-
-
+CARACTERES	'({C_ESCAPE}|{C_HEXADECIMAL}|{C_DECIMAL}|{C_OCTAL})'
 
 
 
 %%
+{CARACTERES}		printf("\nlinea %d, caracter: %s", linea, yytext);
 {EXPONENTE}		printf("\nlinea %d, constante real: %s", linea, yytext);
 {DECIMALES}		printf("\nlinea %d, constante real: %s", linea, yytext);
 {ENTEROS}		printf("\nlinea %d, constante entera: %s", linea, yytext);
+
 
 
 (?i:abstracto)		printf("\nlinea %d, palabra reservada: %s", linea, yytext);
