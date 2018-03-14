@@ -21,6 +21,7 @@ EXPONENTE	({ENTEROS}|{DECIMALES})[eE][+-]?{ENTEROS}
 CARACTERES	({C_ESCAPE}|{C_HEXADECIMAL}|{C_DECIMAL}|{C_OCTAL}|{CARACTER})
 CADENAS		''(\\\n|{CARACTERES})*''
 PATHS		\"("/"|"./"|"../"){CARACTERES}+\"
+DELIMITADORES	([{}():;,|]|"::"|".."|"=>")
 
 
 %%
@@ -30,6 +31,7 @@ PATHS		\"("/"|"./"|"../"){CARACTERES}+\"
 {EXPONENTE}		printf("\nlinea %d, constante real: %s", linea, yytext);
 {DECIMALES}		printf("\nlinea %d, constante real: %s", linea, yytext);
 {ENTEROS}		printf("\nlinea %d, constante entera: %s", linea, yytext);
+{DELIMITADORES}		printf("\nlinea %d, delimitador: %s", linea, yytext);	
 
 
 

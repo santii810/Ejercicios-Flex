@@ -9,4 +9,4 @@ linea3 ''
 ''\n''
 '*'
 "./modulo.stu" "/home/victor/path/modulo.stu" "../path/modulo.stu" "error.txt"
-
+{,:=>}
