@@ -20,9 +20,11 @@ IDENTIFICADOR 	[a-zA-Z_0-9]
 EXPONENTE	({ENTEROS}|{DECIMALES})[eE][+-]?{ENTEROS}
 CARACTERES	({C_ESCAPE}|{C_HEXADECIMAL}|{C_DECIMAL}|{C_OCTAL}|{CARACTER})
 CADENAS		''(\\\n|{CARACTERES})*''
+PATHS		\"("/"|"./"|"../"){CARACTERES}+\"
 
 
 %%
+{PATHS}			printf("\nlinea %d, path: %s", linea, yytext);
 {CADENAS}		printf("\nlinea %d, cadena: %s", linea, yytext);
 '{CARACTERES}'		printf("\nlinea %d, caracter: %s", linea, yytext);
 {EXPONENTE}		printf("\nlinea %d, constante real: %s", linea, yytext);

@@ -8,3 +8,5 @@ linea3 ''
 ''eres un \151\144\x69\157\x74\141\n''
 ''\n''
 '*'
+"./modulo.stu" "/home/victor/path/modulo.stu" "../path/modulo.stu" "error.txt"
+
