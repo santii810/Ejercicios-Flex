@@ -24,17 +24,25 @@ PATHS		\"("/"|"./"|"../"){CARACTERES}+\"
 DELIMITADORES	([{}():;,|]|"::"|".."|"=>")
 OP_COMPUESTOS	(\*{2}|<=|>=|:=|!=|<-|->|\/\\|\\\/)
 OP_SIMPLES	([=+*-/%^@&<>!]|\[|\])
+COM_LINEA	(\/\/.*\n)
+COM_MULTIPLE	(\/\*[.\n]*\*\/)
+
 
 %%
+
 {PATHS}			printf("\nlinea %d, path: %s", linea, yytext);
 {CADENAS}		printf("\nlinea %d, cadena: %s", linea, yytext);
 '{CARACTERES}'		printf("\nlinea %d, caracter: %s", linea, yytext);
+{COM_MULTIPLE}		;
+{COM_LINEA}		linea++;
 {EXPONENTE}		printf("\nlinea %d, constante real: %s", linea, yytext);
 {DECIMALES}		printf("\nlinea %d, constante real: %s", linea, yytext);
 {ENTEROS}		printf("\nlinea %d, constante entera: %s", linea, yytext);
 {DELIMITADORES}		printf("\nlinea %d, delimitador: %s", linea, yytext);	
 {OP_COMPUESTOS}		printf("\nlinea %d, operador: %s", linea, yytext);	
-{OP_SIMPLES}		printf("\nlinea %d, operador: %s", linea, yytext);	
+{OP_SIMPLES}		printf("\nlinea %d, operador: %s", linea, yytext);
+
+
 
 
 
@@ -96,7 +104,7 @@ OP_SIMPLES	([=+*-/%^@&<>!]|\[|\])
 
 
 
-^[a-zA-Z_]{IDENTIFICADOR}*		printf("\nlinea %d, identificador: %s", linea, yytext);
+[a-zA-Z_]{IDENTIFICADOR}*		printf("\nlinea %d, identificador: %s", linea, yytext);
 \n				linea++;
 
 

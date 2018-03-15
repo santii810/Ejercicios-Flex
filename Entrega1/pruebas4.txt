@@ -1,13 +1,8 @@
 //dsajhalskhfaslkfdhlk
 
-''a//b''
+’a//b’
 ".//e"
 // */ 
 f = g/**//h;
 m = n//**/o
 + p;
-
-
-/*hola
-adios
-mismo comentario*/
