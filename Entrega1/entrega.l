@@ -22,7 +22,8 @@ CARACTERES	({C_ESCAPE}|{C_HEXADECIMAL}|{C_DECIMAL}|{C_OCTAL}|{CARACTER})
 CADENAS		''(\\\n|{CARACTERES})*''
 PATHS		\"("/"|"./"|"../"){CARACTERES}+\"
 DELIMITADORES	([{}():;,|]|"::"|".."|"=>")
-
+OP_COMPUESTOS	(\*{2}|<=|>=|:=|!=|<-|->|\/\\|\\\/)
+OP_SIMPLES	([=+*-/%^@&<>!]|\[|\])
 
 %%
 {PATHS}			printf("\nlinea %d, path: %s", linea, yytext);
@@ -32,6 +33,8 @@ DELIMITADORES	([{}():;,|]|"::"|".."|"=>")
 {DECIMALES}		printf("\nlinea %d, constante real: %s", linea, yytext);
 {ENTEROS}		printf("\nlinea %d, constante entera: %s", linea, yytext);
 {DELIMITADORES}		printf("\nlinea %d, delimitador: %s", linea, yytext);	
+{OP_COMPUESTOS}		printf("\nlinea %d, operador: %s", linea, yytext);	
+{OP_SIMPLES}		printf("\nlinea %d, operador: %s", linea, yytext);	
 
 
 
