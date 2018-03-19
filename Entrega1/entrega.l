@@ -2,13 +2,15 @@
 %{ 
    #include <string.h>
    #include <stdlib.h>
-   #include "diccionario.h"
-   
-   DICCIONARIO diccionario;
-   char nombre[255];
-	int linea = 1;
+   int linea = 1;
+ char cadena[256] = "";
 
 %}
+
+%x COM
+%x CAD
+
+
 C_ESCAPE 	(\\'|\\?|\\\\|\\a|\\b|\\f|\\n|\\r|\\t|\\v)
 C_DECIMAL	([0-1]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])
 C_HEXADECIMAL	(?i:\\x[0-9a-f]{1,2})
@@ -19,21 +21,31 @@ DECIMALES 	[+-]?[0-9]*\.[0-9]+
 IDENTIFICADOR 	[a-zA-Z_0-9]
 EXPONENTE	({ENTEROS}|{DECIMALES})[eE][+-]?{ENTEROS}
 CARACTERES	({C_ESCAPE}|{C_HEXADECIMAL}|{C_DECIMAL}|{C_OCTAL}|{CARACTER})
-CADENAS		''(\\\n|{CARACTERES})*''
 PATHS		\"("/"|"./"|"../"){CARACTERES}+\"
 DELIMITADORES	([{}():;,|]|"::"|".."|"=>")
 OP_COMPUESTOS	(\*{2}|<=|>=|:=|!=|<-|->|\/\\|\\\/)
 OP_SIMPLES	([=+*-/%^@&<>!]|\[|\])
 COM_LINEA	(\/\/.*\n)
-COM_MULTIPLE	(\/\*[.\n]*\*\/)
+COM_MULTILINEA	\/\*
+CADENAS		.*\\
 
 
 %%
-
 {PATHS}			printf("\nlinea %d, path: %s", linea, yytext);
-{CADENAS}		printf("\nlinea %d, cadena: %s", linea, yytext);
 '{CARACTERES}'		printf("\nlinea %d, caracter: %s", linea, yytext);
-{COM_MULTIPLE}		;
+'{CADENAS}		BEGIN(CAD);strcat(cadena, yytext);
+<CAD>\n			linea++;strcat(cadena, yytext);
+<CAD>.*'		BEGIN 0;strcat(cadena, yytext); printf("\nlinea %d, cadena: %s", linea, cadena);
+<CAD>{CADENAS}		strcat(cadena,yytext);
+{COM_MULTILINEA}	BEGIN(COM);
+<COM>\n			linea++;
+<COM>.			;
+<COM>\*\/		BEGIN 0;
+
+
+
+
+
 {COM_LINEA}		linea++;
 {EXPONENTE}		printf("\nlinea %d, constante real: %s", linea, yytext);
 {DECIMALES}		printf("\nlinea %d, constante real: %s", linea, yytext);
@@ -41,9 +53,6 @@ COM_MULTIPLE	(\/\*[.\n]*\*\/)
 {DELIMITADORES}		printf("\nlinea %d, delimitador: %s", linea, yytext);	
 {OP_COMPUESTOS}		printf("\nlinea %d, operador: %s", linea, yytext);	
 {OP_SIMPLES}		printf("\nlinea %d, operador: %s", linea, yytext);
-
-
-
 
 
 (?i:abstracto)		printf("\nlinea %d, palabra reservada: %s", linea, yytext);
@@ -104,10 +113,10 @@ COM_MULTIPLE	(\/\*[.\n]*\*\/)
 
 
 
-[a-zA-Z_]{IDENTIFICADOR}*		printf("\nlinea %d, identificador: %s", linea, yytext);
+[a-zA-Z_]{IDENTIFICADOR}*	printf("\nlinea %d, identificador: %s", linea, yytext);
 \n				linea++;
-
-
+(" "|\t)*				printf("\nlinea %d, espacio: %s", linea, yytext);
+.				;
 
 %%
 
@@ -119,14 +128,7 @@ int yywrap()
 int main(int argc, char *argv []) 
 {
   yyin = fopen(argv[1],"r");
-  yyout = fopen(argv[2],"w");
-  
-  inicializar_diccionario(&diccionario);
   yylex();
-  liberar_diccionario(&diccionario);
-
   printf("\n\n");
-
   fclose(yyin);
-  fclose(yyout);
 }
