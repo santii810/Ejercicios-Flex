@@ -1,0 +1,6 @@
+bison -dv calc.y 
+flex calc.l
+gcc -o calc lex.yy.c 
+
+
+podemos ignorar warnigns, si todo va bien tendremos un fichero calc.output con la gramatica

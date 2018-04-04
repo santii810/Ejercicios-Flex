@@ -55,6 +55,9 @@ CADENAS		.*\\
 {OP_SIMPLES}		printf("\nlinea %d, operador: %s", linea, yytext);
 
 
+
+
+
 (?i:abstracto)		printf("\nlinea %d, palabra reservada: %s", linea, yytext);
 (?i:asociativa)		printf("\nlinea %d, palabra reservada: %s", linea, yytext);
 (?i:booleano)		printf("\nlinea %d, palabra reservada: %s", linea, yytext);
@@ -118,6 +121,8 @@ CADENAS		.*\\
 (" "|\t)*				printf("\nlinea %d, espacio: %s", linea, yytext);
 .				;
 
+
+
 %%
 
 int yywrap() 
@@ -128,7 +133,10 @@ int yywrap()
 int main(int argc, char *argv []) 
 {
   yyin = fopen(argv[1],"r");
+  
   yylex();
+
   printf("\n\n");
+
   fclose(yyin);
 }

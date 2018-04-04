@@ -1,0 +1,1046 @@
+Gramática
+
+    0 $accept: lineas $end
+
+    1 lineas: %empty
+    2       | lineas linea
+
+    3 linea: '\n'
+    4      | IDENTIFICADOR '=' expresion '\n'
+    5      | expresion '\n'
+    6      | error '\n'
+
+    7 condicion: cond_simple
+    8          | '(' condicion ')'
+    9          | condicion AND condicion
+   10          | condicion OR condicion
+
+   11 cond_simple: expresion '<' expresion
+   12            | expresion '>' expresion
+   13            | expresion EQ expresion
+   14            | expresion NE expresion
+   15            | expresion LE expresion
+   16            | expresion GE expresion
+
+   17 expresion: CONSTANTE_REAL
+   18          | CONSTANTE_ENTERA
+   19          | IDENTIFICADOR
+   20          | expresion '+' expresion
+   21          | expresion '-' expresion
+   22          | expresion '*' expresion
+   23          | expresion '/' expresion
+   24          | expresion '^' expresion
+   25          | SIN '(' expresion ')'
+   26          | COS '(' expresion ')'
+   27          | TAN '(' expresion ')'
+   28          | '-' expresion
+   29          | '(' expresion ')'
+   30          | '(' condicion '?' expresion ':' expresion ')'
+
+
+Terminales con las reglas donde aparecen
+
+$end (0) 0
+'\n' (10) 3 4 5 6
+'(' (40) 8 25 26 27 29 30
+')' (41) 8 25 26 27 29 30
+'*' (42) 22
+'+' (43) 20
+'-' (45) 21 28
+'/' (47) 23
+':' (58) 30
+'<' (60) 11
+'=' (61) 4
+'>' (62) 12
+'?' (63) 30
+'^' (94) 24
+error (256) 6
+OR (258) 10
+AND (259) 9
+EQ (260) 13
+NE (261) 14
+LE (262) 15
+GE (263) 16
+SIN (264) 25
+COS (265) 26
+TAN (266) 27
+CONSTANTE_REAL (267) 17
+CONSTANTE_ENTERA (268) 18
+IDENTIFICADOR (269) 4 19
+
+
+No terminales con las reglas donde aparecen
+
+$accept (28)
+    en la izquierda: 0
+lineas (29)
+    en la izquierda: 1 2, en la derecha: 0 2
+linea (30)
+    en la izquierda: 3 4 5 6, en la derecha: 2
+condicion (31)
+    en la izquierda: 7 8 9 10, en la derecha: 8 9 10 30
+cond_simple (32)
+    en la izquierda: 11 12 13 14 15 16, en la derecha: 7
+expresion (33)
+    en la izquierda: 17 18 19 20 21 22 23 24 25 26 27 28 29 30, en la derecha:
+    4 5 11 12 13 14 15 16 20 21 22 23 24 25 26 27 28 29 30
+
+
+Estado 0
+
+    0 $accept: . lineas $end
+
+    $default  reduce usando la regla 1 (lineas)
+
+    lineas  ir al estado 1
+
+
+Estado 1
+
+    0 $accept: lineas . $end
+    2 lineas: lineas . linea
+
+    $end              desplazar e ir al estado 2
+    error             desplazar e ir al estado 3
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 10
+    '\n'              desplazar e ir al estado 11
+    '('               desplazar e ir al estado 12
+
+    linea      ir al estado 13
+    expresion  ir al estado 14
+
+
+Estado 2
+
+    0 $accept: lineas $end .
+
+    $default  aceptar
+
+
+Estado 3
+
+    6 linea: error . '\n'
+
+    '\n'  desplazar e ir al estado 15
+
+
+Estado 4
+
+   28 expresion: '-' . expresion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 17
+
+
+Estado 5
+
+   25 expresion: SIN . '(' expresion ')'
+
+    '('  desplazar e ir al estado 18
+
+
+Estado 6
+
+   26 expresion: COS . '(' expresion ')'
+
+    '('  desplazar e ir al estado 19
+
+
+Estado 7
+
+   27 expresion: TAN . '(' expresion ')'
+
+    '('  desplazar e ir al estado 20
+
+
+Estado 8
+
+   17 expresion: CONSTANTE_REAL .
+
+    $default  reduce usando la regla 17 (expresion)
+
+
+Estado 9
+
+   18 expresion: CONSTANTE_ENTERA .
+
+    $default  reduce usando la regla 18 (expresion)
+
+
+Estado 10
+
+    4 linea: IDENTIFICADOR . '=' expresion '\n'
+   19 expresion: IDENTIFICADOR .
+
+    '='  desplazar e ir al estado 21
+
+    $default  reduce usando la regla 19 (expresion)
+
+
+Estado 11
+
+    3 linea: '\n' .
+
+    $default  reduce usando la regla 3 (linea)
+
+
+Estado 12
+
+   29 expresion: '(' . expresion ')'
+   30          | '(' . condicion '?' expresion ':' expresion ')'
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 22
+
+    condicion    ir al estado 23
+    cond_simple  ir al estado 24
+    expresion    ir al estado 25
+
+
+Estado 13
+
+    2 lineas: lineas linea .
+
+    $default  reduce usando la regla 2 (lineas)
+
+
+Estado 14
+
+    5 linea: expresion . '\n'
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+
+    '-'   desplazar e ir al estado 26
+    '+'   desplazar e ir al estado 27
+    '*'   desplazar e ir al estado 28
+    '/'   desplazar e ir al estado 29
+    '^'   desplazar e ir al estado 30
+    '\n'  desplazar e ir al estado 31
+
+
+Estado 15
+
+    6 linea: error '\n' .
+
+    $default  reduce usando la regla 6 (linea)
+
+
+Estado 16
+
+   19 expresion: IDENTIFICADOR .
+
+    $default  reduce usando la regla 19 (expresion)
+
+
+Estado 17
+
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+   28          | '-' expresion .
+
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+
+    $default  reduce usando la regla 28 (expresion)
+
+
+Estado 18
+
+   25 expresion: SIN '(' . expresion ')'
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 32
+
+
+Estado 19
+
+   26 expresion: COS '(' . expresion ')'
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 33
+
+
+Estado 20
+
+   27 expresion: TAN '(' . expresion ')'
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 34
+
+
+Estado 21
+
+    4 linea: IDENTIFICADOR '=' . expresion '\n'
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 35
+
+
+Estado 22
+
+    8 condicion: '(' . condicion ')'
+   29 expresion: '(' . expresion ')'
+   30          | '(' . condicion '?' expresion ':' expresion ')'
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 22
+
+    condicion    ir al estado 36
+    cond_simple  ir al estado 24
+    expresion    ir al estado 25
+
+
+Estado 23
+
+    9 condicion: condicion . AND condicion
+   10          | condicion . OR condicion
+   30 expresion: '(' condicion . '?' expresion ':' expresion ')'
+
+    OR   desplazar e ir al estado 37
+    AND  desplazar e ir al estado 38
+    '?'  desplazar e ir al estado 39
+
+
+Estado 24
+
+    7 condicion: cond_simple .
+
+    $default  reduce usando la regla 7 (condicion)
+
+
+Estado 25
+
+   11 cond_simple: expresion . '<' expresion
+   12            | expresion . '>' expresion
+   13            | expresion . EQ expresion
+   14            | expresion . NE expresion
+   15            | expresion . LE expresion
+   16            | expresion . GE expresion
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+   29          | '(' expresion . ')'
+
+    EQ   desplazar e ir al estado 40
+    NE   desplazar e ir al estado 41
+    LE   desplazar e ir al estado 42
+    GE   desplazar e ir al estado 43
+    '<'  desplazar e ir al estado 44
+    '>'  desplazar e ir al estado 45
+    '-'  desplazar e ir al estado 26
+    '+'  desplazar e ir al estado 27
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+    ')'  desplazar e ir al estado 46
+
+
+Estado 26
+
+   21 expresion: expresion '-' . expresion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 47
+
+
+Estado 27
+
+   20 expresion: expresion '+' . expresion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 48
+
+
+Estado 28
+
+   22 expresion: expresion '*' . expresion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 49
+
+
+Estado 29
+
+   23 expresion: expresion '/' . expresion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 50
+
+
+Estado 30
+
+   24 expresion: expresion '^' . expresion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 51
+
+
+Estado 31
+
+    5 linea: expresion '\n' .
+
+    $default  reduce usando la regla 5 (linea)
+
+
+Estado 32
+
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+   25          | SIN '(' expresion . ')'
+
+    '-'  desplazar e ir al estado 26
+    '+'  desplazar e ir al estado 27
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+    ')'  desplazar e ir al estado 52
+
+
+Estado 33
+
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+   26          | COS '(' expresion . ')'
+
+    '-'  desplazar e ir al estado 26
+    '+'  desplazar e ir al estado 27
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+    ')'  desplazar e ir al estado 53
+
+
+Estado 34
+
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+   27          | TAN '(' expresion . ')'
+
+    '-'  desplazar e ir al estado 26
+    '+'  desplazar e ir al estado 27
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+    ')'  desplazar e ir al estado 54
+
+
+Estado 35
+
+    4 linea: IDENTIFICADOR '=' expresion . '\n'
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+
+    '-'   desplazar e ir al estado 26
+    '+'   desplazar e ir al estado 27
+    '*'   desplazar e ir al estado 28
+    '/'   desplazar e ir al estado 29
+    '^'   desplazar e ir al estado 30
+    '\n'  desplazar e ir al estado 55
+
+
+Estado 36
+
+    8 condicion: '(' condicion . ')'
+    9          | condicion . AND condicion
+   10          | condicion . OR condicion
+   30 expresion: '(' condicion . '?' expresion ':' expresion ')'
+
+    OR   desplazar e ir al estado 37
+    AND  desplazar e ir al estado 38
+    ')'  desplazar e ir al estado 56
+    '?'  desplazar e ir al estado 39
+
+
+Estado 37
+
+   10 condicion: condicion OR . condicion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 22
+
+    condicion    ir al estado 57
+    cond_simple  ir al estado 24
+    expresion    ir al estado 58
+
+
+Estado 38
+
+    9 condicion: condicion AND . condicion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 22
+
+    condicion    ir al estado 59
+    cond_simple  ir al estado 24
+    expresion    ir al estado 58
+
+
+Estado 39
+
+   30 expresion: '(' condicion '?' . expresion ':' expresion ')'
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 60
+
+
+Estado 40
+
+   13 cond_simple: expresion EQ . expresion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 61
+
+
+Estado 41
+
+   14 cond_simple: expresion NE . expresion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 62
+
+
+Estado 42
+
+   15 cond_simple: expresion LE . expresion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 63
+
+
+Estado 43
+
+   16 cond_simple: expresion GE . expresion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 64
+
+
+Estado 44
+
+   11 cond_simple: expresion '<' . expresion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 65
+
+
+Estado 45
+
+   12 cond_simple: expresion '>' . expresion
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 66
+
+
+Estado 46
+
+   29 expresion: '(' expresion ')' .
+
+    $default  reduce usando la regla 29 (expresion)
+
+
+Estado 47
+
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   21          | expresion '-' expresion .
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+
+    $default  reduce usando la regla 21 (expresion)
+
+
+Estado 48
+
+   20 expresion: expresion . '+' expresion
+   20          | expresion '+' expresion .
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+
+    $default  reduce usando la regla 20 (expresion)
+
+
+Estado 49
+
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   22          | expresion '*' expresion .
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+
+    '^'  desplazar e ir al estado 30
+
+    $default  reduce usando la regla 22 (expresion)
+
+
+Estado 50
+
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   23          | expresion '/' expresion .
+   24          | expresion . '^' expresion
+
+    '^'  desplazar e ir al estado 30
+
+    $default  reduce usando la regla 23 (expresion)
+
+
+Estado 51
+
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+   24          | expresion '^' expresion .
+
+    '^'  desplazar e ir al estado 30
+
+    $default  reduce usando la regla 24 (expresion)
+
+
+Estado 52
+
+   25 expresion: SIN '(' expresion ')' .
+
+    $default  reduce usando la regla 25 (expresion)
+
+
+Estado 53
+
+   26 expresion: COS '(' expresion ')' .
+
+    $default  reduce usando la regla 26 (expresion)
+
+
+Estado 54
+
+   27 expresion: TAN '(' expresion ')' .
+
+    $default  reduce usando la regla 27 (expresion)
+
+
+Estado 55
+
+    4 linea: IDENTIFICADOR '=' expresion '\n' .
+
+    $default  reduce usando la regla 4 (linea)
+
+
+Estado 56
+
+    8 condicion: '(' condicion ')' .
+
+    $default  reduce usando la regla 8 (condicion)
+
+
+Estado 57
+
+    9 condicion: condicion . AND condicion
+   10          | condicion . OR condicion
+   10          | condicion OR condicion .
+
+    AND  desplazar e ir al estado 38
+
+    $default  reduce usando la regla 10 (condicion)
+
+
+Estado 58
+
+   11 cond_simple: expresion . '<' expresion
+   12            | expresion . '>' expresion
+   13            | expresion . EQ expresion
+   14            | expresion . NE expresion
+   15            | expresion . LE expresion
+   16            | expresion . GE expresion
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+
+    EQ   desplazar e ir al estado 40
+    NE   desplazar e ir al estado 41
+    LE   desplazar e ir al estado 42
+    GE   desplazar e ir al estado 43
+    '<'  desplazar e ir al estado 44
+    '>'  desplazar e ir al estado 45
+    '-'  desplazar e ir al estado 26
+    '+'  desplazar e ir al estado 27
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+
+
+Estado 59
+
+    9 condicion: condicion . AND condicion
+    9          | condicion AND condicion .
+   10          | condicion . OR condicion
+
+    $default  reduce usando la regla 9 (condicion)
+
+
+Estado 60
+
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+   30          | '(' condicion '?' expresion . ':' expresion ')'
+
+    '-'  desplazar e ir al estado 26
+    '+'  desplazar e ir al estado 27
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+    ':'  desplazar e ir al estado 67
+
+
+Estado 61
+
+   13 cond_simple: expresion EQ expresion .
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+
+    '-'  desplazar e ir al estado 26
+    '+'  desplazar e ir al estado 27
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+
+    $default  reduce usando la regla 13 (cond_simple)
+
+
+Estado 62
+
+   14 cond_simple: expresion NE expresion .
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+
+    '-'  desplazar e ir al estado 26
+    '+'  desplazar e ir al estado 27
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+
+    $default  reduce usando la regla 14 (cond_simple)
+
+
+Estado 63
+
+   15 cond_simple: expresion LE expresion .
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+
+    '-'  desplazar e ir al estado 26
+    '+'  desplazar e ir al estado 27
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+
+    $default  reduce usando la regla 15 (cond_simple)
+
+
+Estado 64
+
+   16 cond_simple: expresion GE expresion .
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+
+    '-'  desplazar e ir al estado 26
+    '+'  desplazar e ir al estado 27
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+
+    $default  reduce usando la regla 16 (cond_simple)
+
+
+Estado 65
+
+   11 cond_simple: expresion '<' expresion .
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+
+    '-'  desplazar e ir al estado 26
+    '+'  desplazar e ir al estado 27
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+
+    $default  reduce usando la regla 11 (cond_simple)
+
+
+Estado 66
+
+   12 cond_simple: expresion '>' expresion .
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+
+    '-'  desplazar e ir al estado 26
+    '+'  desplazar e ir al estado 27
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+
+    $default  reduce usando la regla 12 (cond_simple)
+
+
+Estado 67
+
+   30 expresion: '(' condicion '?' expresion ':' . expresion ')'
+
+    '-'               desplazar e ir al estado 4
+    SIN               desplazar e ir al estado 5
+    COS               desplazar e ir al estado 6
+    TAN               desplazar e ir al estado 7
+    CONSTANTE_REAL    desplazar e ir al estado 8
+    CONSTANTE_ENTERA  desplazar e ir al estado 9
+    IDENTIFICADOR     desplazar e ir al estado 16
+    '('               desplazar e ir al estado 12
+
+    expresion  ir al estado 68
+
+
+Estado 68
+
+   20 expresion: expresion . '+' expresion
+   21          | expresion . '-' expresion
+   22          | expresion . '*' expresion
+   23          | expresion . '/' expresion
+   24          | expresion . '^' expresion
+   30          | '(' condicion '?' expresion ':' expresion . ')'
+
+    '-'  desplazar e ir al estado 26
+    '+'  desplazar e ir al estado 27
+    '*'  desplazar e ir al estado 28
+    '/'  desplazar e ir al estado 29
+    '^'  desplazar e ir al estado 30
+    ')'  desplazar e ir al estado 69
+
+
+Estado 69
+
+   30 expresion: '(' condicion '?' expresion ':' expresion ')' .
+
+    $default  reduce usando la regla 30 (expresion)
