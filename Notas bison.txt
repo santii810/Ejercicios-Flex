@@ -1,0 +1,58 @@
+bison -dv calc.y 
+flex calc.l
+gcc -o calc lex.yy.c 
+
+
+podemos ignorar warnigns, si todo va bien tendremos un fichero calc.output con la gramatica
+
+
+
+bloque_instrucciones -> '{'intrucciones'}'
+instrucciones -> intruccion
+	| -> instrucciones intruccion
+
+	o
+instrucciones -> E
+	| -> instrucciones intruccion	
+	
+	
+	
+	
+	Cuando los imbolos estan separados por comas:
+	(....)+ tenemos que esos simbolos pueden repetirse 1 o mas veces
+	Nos da esto: (con un *)
+	llamada.subprograma ::= nombre'('(expresion)*')' 		//cuando los parentesis o cortchetes estan entre comilals son tokens, no operadores
+	Lo implementamos en reglas:
+		llamada.subprograma -> nombre'('parametros')'
+		parametros->E
+			| expresiones
+		expresiones -> expresion
+			| expresiones','expresion
+	
+	Con un +:
+	Nos da esto:
+	llamada.subprograma ::= nombre'('(expresion)+')' 		//cuando los parentesis o cortchetes estan entre comilals son tokens, no operadores
+	Lo implementamos en reglas:
+		llamada.subprograma -> nombre'('expresiones')'
+		expresiones->E
+			| expresiones,expresion
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+Notacion para los simbolos opcionales [?]
+seccion.cuerpo::= 'cuerpo'
+				[declaraciones_tipos]?
+				[declaraciones_constantes]?
+				[declaraciones_variables]?
+				[declaracion_subprogramas]+
+	
+	
+	
+	
